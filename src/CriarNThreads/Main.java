@@ -16,8 +16,10 @@ public class Main {
         Scanner in = new Scanner(System.in);
         int num = in.nextInt();
         int sleepTime = 500;
+        
         System.out.println("Method 1");
         createNThreadsMethod1(num, sleepTime);
+        
         System.out.println("Method 2");
         createNThreadsMethod2(num, sleepTime);
     }
