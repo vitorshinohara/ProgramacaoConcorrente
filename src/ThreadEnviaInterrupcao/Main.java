@@ -1,7 +1,7 @@
 /*
  * Thread que envia interrupções para outras Threads
  * Foi recriado a Thread para a leitura do arquivo 'quotes.txt'
- * Após sua criação, a mesma é interrompida
+ * Após sua criação, é esperado 10 segundos e então é interrompida
  */
 package ThreadEnviaInterrupcao;
 
@@ -24,7 +24,7 @@ public class Main {
         threadReadFile.start();
 
         try {
-            Thread.sleep(1200);
+            Thread.sleep(10000);
         } catch (InterruptedException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -76,7 +76,7 @@ class ThreadReadFile extends Thread {
                 System.out.println("[THREAD] Sleeping...");
             } catch (InterruptedException ex) {
                 System.out.println("-------------------------------");
-                System.out.println("Tnread interrompida. Parando...");
+                System.out.println("[THREAD] Thread interrompida. Parando...");
                 System.out.println("-------------------------------");
                 break;
             }

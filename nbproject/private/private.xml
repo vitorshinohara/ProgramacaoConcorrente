@@ -13,11 +13,11 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/home/yudi/NetBeansProjects/ProgramacaoConcorrente/src/ThreadLeituraArquivo/Main.java</file>
-            <file>file:/home/yudi/NetBeansProjects/ProgramacaoConcorrente/src/CriarNThreads/Main.java</file>
             <file>file:/home/yudi/NetBeansProjects/ProgramacaoConcorrente/src/ThreadLambdaExpression/Main.java</file>
             <file>file:/home/yudi/NetBeansProjects/ProgramacaoConcorrente/src/DisputaThreads/Main.java</file>
             <file>file:/home/yudi/NetBeansProjects/ProgramacaoConcorrente/src/InterromperThread/Main.java</file>
             <file>file:/home/yudi/NetBeansProjects/ProgramacaoConcorrente/src/ThreadEnviaInterrupcao/Main.java</file>
+            <file>file:/home/yudi/NetBeansProjects/ProgramacaoConcorrente/src/ThreadJoin/Main.java</file>
         </group>
     </open-files>
 </project-private>
