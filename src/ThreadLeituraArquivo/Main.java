@@ -59,10 +59,6 @@ class ThreadFactory extends Thread {
             } catch (InterruptedException ex) {
                 Logger.getLogger(ThreadFactory.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
-            if (Thread.interrupted()) {
-                throw new InterruptedException();
-            }
         }
 
     }
