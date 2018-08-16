@@ -1,2 +1,0 @@
-ThreadLeituraArquivo.ThreadFactory
-ThreadLeituraArquivo.Main

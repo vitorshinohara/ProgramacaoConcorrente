@@ -1,2 +1,0 @@
-InterromperThread.Main
-InterromperThread.ThreadFactory
