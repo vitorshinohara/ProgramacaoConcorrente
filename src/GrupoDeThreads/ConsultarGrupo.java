@@ -19,19 +19,10 @@ public class ConsultarGrupo {
 
         // 5 threads com 500 ms de delay
         adicionarThreadNoGrupo(threadGroup, 5);
+        
+        MonitorThread monitorThread = new MonitorThread(threadGroup);
+        monitorThread.start();
 
-        // Thread principal dorme
-        try {
-            Thread.sleep(10000);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(ConsultarGrupo.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        System.out.println("-------------------------------");
-        System.out.println("[MAIN] Interrompendo Threads...");
-        System.out.println("-------------------------------");
-
-        threadGroup.interrupt();
     }
 
     public static void adicionarThreadNoGrupo(ThreadGroup grupo, int numberOfThreads) {
@@ -42,6 +33,32 @@ public class ConsultarGrupo {
         }
 
     }
+}
+
+class MonitorThread extends Thread {
+
+    Random random = new Random();
+    int monitorDelay = random.nextInt(5000) + 1000;
+
+    ThreadGroup group;
+
+    public MonitorThread(ThreadGroup group) {
+        this.group = group;
+    }
+
+    @Override
+    public void run() {
+        while (true) {
+            try {
+                System.out.format("[MONITOR THREAD] %d Threads running on group...\n", this.group.activeCount());
+                Thread.sleep(this.monitorDelay);
+                
+            } catch (InterruptedException ex) {
+                System.out.println("[MONITOR THREAD] Stopping...");
+            }
+        }
+    }
+
 }
 
 class ThreadFactory extends Thread {
@@ -63,6 +80,13 @@ class ThreadFactory extends Thread {
 
                 System.out.format("[Thread %s] Running...\n", currentThread().getName());
                 Thread.sleep(this.sleepTime);
+                
+                Random percentageRandom = new Random();
+                int percentage = percentageRandom.nextInt(100);
+                
+                if (percentage <= 15) {
+                    throw  new InterruptedException();
+                }
 
             } catch (InterruptedException ex) {
                 System.out.format("[Thread %s] Stopping...\n", currentThread().getName());
