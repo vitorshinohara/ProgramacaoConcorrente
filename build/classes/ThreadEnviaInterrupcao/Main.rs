@@ -1,2 +1,0 @@
-ThreadEnviaInterrupcao.Main
-ThreadEnviaInterrupcao.ThreadReadFile

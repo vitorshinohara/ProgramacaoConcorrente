@@ -1,4 +1,0 @@
-CriarNThreads.Method2
-CriarNThreads.method2
-CriarNThreads.ThreadCreatorMethod2
-CriarNThreads.Main
