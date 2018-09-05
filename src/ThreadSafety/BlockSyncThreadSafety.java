@@ -9,13 +9,12 @@ package ThreadSafety;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import jdk.nashorn.internal.objects.NativeDate;
 
 /**
  *
  * @author a1711199
  */
-public class PrimosThreadSafety {
+public class BlockSyncThreadSafety {
 
     private int maxNum;
     private int minNum;
@@ -54,39 +53,38 @@ public class PrimosThreadSafety {
         this.currentNum = currentNum;
     }
 
-    public PrimosThreadSafety() {
+    public BlockSyncThreadSafety() {
     }
 
     public static void main(String[] args) {
-        PrimosThreadSafety primosThreadSafety = new PrimosThreadSafety();
+        BlockSyncThreadSafety blockSyncThreadSafety = new BlockSyncThreadSafety();
         Scanner scanner = new Scanner(System.in);
         System.out.println("Digite a quantidade de Threads a serem criadas:");
         int nThreads = scanner.nextInt();
         System.out.println("Digite o intervalo (número inicial)");
-        primosThreadSafety.setMinNum(scanner.nextInt());
+        blockSyncThreadSafety.setMinNum(scanner.nextInt());
         System.out.println("Digite o intervalo (número final)");
-        primosThreadSafety.setMaxNum(scanner.nextInt());
+        blockSyncThreadSafety.setMaxNum(scanner.nextInt());
 
-        primosThreadSafety.setCurrentNum(primosThreadSafety.getMinNum());
-
-        primosThreadSafety.createNThreads(nThreads);
+        blockSyncThreadSafety.setCurrentNum(blockSyncThreadSafety.getMinNum());
+        blockSyncThreadSafety.createNThreads(nThreads);
 
     }
 
     private void createNThreads(int numberOfThreads) {
         for (int i = 0; i < numberOfThreads; i++) {
-            ThreadFactory thread = new ThreadFactory(this);
+            BlockSyncThread thread = new BlockSyncThread(this);
             thread.start();
         }
     }
 }
 
-class ThreadFactory extends Thread {
+class BlockSyncThread extends Thread {
 
-    PrimosThreadSafety primosThreadSafety = null;
+    BlockSyncThreadSafety blockSyncThreadSafety = null;
 
-    public ThreadFactory(PrimosThreadSafety primosThreadSafety) {
-        this.primosThreadSafety = primosThreadSafety;
+    public BlockSyncThread(BlockSyncThreadSafety blockSyncThreadSafety) {
+        this.blockSyncThreadSafety = blockSyncThreadSafety;
     }
 
     @Override
@@ -95,12 +93,12 @@ class ThreadFactory extends Thread {
         int currentNumber = 0;
 
         synchronized (this) {
-            currentNumber = primosThreadSafety.getCurrentNum();
+            currentNumber = blockSyncThreadSafety.getCurrentNum();
             currentNumber = currentNumber + 1;
-            primosThreadSafety.setCurrentNum(currentNumber);
+            blockSyncThreadSafety.setCurrentNum(currentNumber);
         }
 
-        while (currentNumber < primosThreadSafety.getMaxNum()) {
+        while (currentNumber < blockSyncThreadSafety.getMaxNum()) {
 
             int divisibleCount = 0;
 
@@ -112,13 +110,13 @@ class ThreadFactory extends Thread {
 
             if (divisibleCount <= 2) {
                 System.out.println("[Thread " + Thread.currentThread().getId() + "] Número " + currentNumber + " é primo!");
-                primosThreadSafety.getList().add(currentNumber);
+                blockSyncThreadSafety.getList().add(currentNumber);
             }
 
             synchronized (this) {
-                currentNumber = primosThreadSafety.getCurrentNum();
+                currentNumber = blockSyncThreadSafety.getCurrentNum();
                 currentNumber = currentNumber + 1;
-                primosThreadSafety.setCurrentNum(currentNumber);
+                blockSyncThreadSafety.setCurrentNum(currentNumber);
             }
 
         }
