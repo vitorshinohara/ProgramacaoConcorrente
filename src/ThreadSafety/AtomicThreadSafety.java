@@ -1,7 +1,9 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+    Programa em Java que use Threads para encontrar
+    os ńnúmeros primos dentro de um intervalo.  O mé́etodo que
+    contabiliza os ńnúmeros primos possui como entrada:
+    valor inicial e final do intervalo, n ́umero de threads.
+    Abordagem Thread Safety: Variável atômica
  */
 package ThreadSafety;
 
@@ -15,31 +17,29 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author a1711199
  */
 public class AtomicThreadSafety {
+
     private int minRange;
     private int maxRange;
     AtomicInteger current;
     private List<Integer> list = new ArrayList();
-    
-    
 
     public AtomicThreadSafety() {
     }
-    
-    
+
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        
+
         System.out.println("Digite a quantidade de Threads a serem criadas:");
         int nThreads = scanner.nextInt();
-        
+
         System.out.println("Digite o intervalo (número inicial)");
         int min = scanner.nextInt();
-        
+
         System.out.println("Digite o intervalo (número final)");
         int max = scanner.nextInt();
     }
-    
-    public void createNThreads(int n){
+
+    public void createNThreads(int n) {
         for (int i = 0; i < n; i++) {
             // create threads
         }
@@ -68,25 +68,25 @@ public class AtomicThreadSafety {
     public void setList(List<Integer> list) {
         this.list = list;
     }
-    
+
 }
 
-class AtomicThread extends Thread{
+class AtomicThread extends Thread {
+
     AtomicThreadSafety atomicThreadSafety;
 
     public AtomicThread(AtomicThreadSafety atomicThreadSafety) {
         this.atomicThreadSafety = atomicThreadSafety;
     }
-    
-    @Override
-    public void run(){
-        System.out.println("Running");
-        AtomicInteger currentNumber = new AtomicInteger(-1);
-        
-        currentNumber = atomicThreadSafety.current.getAndIncrement();
-        
 
-        while (currentNumber < atomicThreadSafety.getMaxRange()){
+    @Override
+    public void run() {
+        System.out.println("Running");
+        int currentNumber;
+
+        currentNumber = atomicThreadSafety.current.getAndIncrement();
+
+        while (currentNumber < atomicThreadSafety.getMaxRange()) {
 
             int divisibleCount = 0;
 
@@ -98,16 +98,12 @@ class AtomicThread extends Thread{
 
             if (divisibleCount <= 2) {
                 System.out.println("[Thread " + Thread.currentThread().getId() + "] Número " + currentNumber + " é primo!");
-                primosThreadSafety.getList().add(currentNumber);
+                atomicThreadSafety.getList().add(currentNumber);
             }
 
-            synchronized (this) {
-                currentNumber = primosThreadSafety.getCurrentNum();
-                currentNumber = currentNumber + 1;
-                primosThreadSafety.setCurrentNum(currentNumber);
-            }
+            currentNumber = atomicThreadSafety.current.getAndIncrement();
 
         }
     }
-    
+
 }

@@ -3,8 +3,8 @@
     os ńnúmeros primos dentro de um intervalo.  O mé́etodo que
     contabiliza os ńnúmeros primos possui como entrada:
     valor inicial e final do intervalo, n ́umero de threads.
-    Abordagem Thread Safety: Sincronização do bloco
- */
+    Abordagem Thread Safety: Sincronização do método
+*/
 package ThreadSafety;
 
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ import java.util.Scanner;
  *
  * @author a1711199
  */
-public class BlockSyncThreadSafety {
+public class MethodSyncThreadSafety {
 
     private int maxNum;
     private int minNum;
@@ -54,39 +54,39 @@ public class BlockSyncThreadSafety {
         this.currentNum = currentNum;
     }
 
-    public BlockSyncThreadSafety() {
+    public MethodSyncThreadSafety() {
     }
 
     public static void main(String[] args) {
-        System.out.println("Bloco Syncronized");
-        BlockSyncThreadSafety blockSyncThreadSafety = new BlockSyncThreadSafety();
+        System.out.println("Método Syncronized");
+        MethodSyncThreadSafety methodSyncThreadSafety = new MethodSyncThreadSafety();
         Scanner scanner = new Scanner(System.in);
         System.out.println("Digite a quantidade de Threads a serem criadas:");
         int nThreads = scanner.nextInt();
         System.out.println("Digite o intervalo (número inicial)");
-        blockSyncThreadSafety.setMinNum(scanner.nextInt());
+        methodSyncThreadSafety.setMinNum(scanner.nextInt());
         System.out.println("Digite o intervalo (número final)");
-        blockSyncThreadSafety.setMaxNum(scanner.nextInt());
+        methodSyncThreadSafety.setMaxNum(scanner.nextInt());
 
-        blockSyncThreadSafety.setCurrentNum(blockSyncThreadSafety.getMinNum());
-        blockSyncThreadSafety.createNThreads(nThreads);
+        methodSyncThreadSafety.setCurrentNum(methodSyncThreadSafety.getMinNum());
+        methodSyncThreadSafety.createNThreads(nThreads);
 
     }
 
     private void createNThreads(int numberOfThreads) {
         for (int i = 0; i < numberOfThreads; i++) {
-            BlockSyncThread thread = new BlockSyncThread(this);
+            MethodSyncThread thread = new MethodSyncThread(this);
             thread.start();
         }
     }
 }
 
-class BlockSyncThread extends Thread {
+class MethodSyncThread extends Thread {
 
-    BlockSyncThreadSafety blockSyncThreadSafety = null;
+    MethodSyncThreadSafety methodSyncThreadSafety = null;
 
-    public BlockSyncThread(BlockSyncThreadSafety blockSyncThreadSafety) {
-        this.blockSyncThreadSafety = blockSyncThreadSafety;
+    public MethodSyncThread(MethodSyncThreadSafety methodSyncThreadSafety) {
+        this.methodSyncThreadSafety = methodSyncThreadSafety;
     }
 
     @Override
@@ -94,13 +94,9 @@ class BlockSyncThread extends Thread {
         System.out.println("Running");
         int currentNumber = 0;
 
-        synchronized (this) {
-            currentNumber = blockSyncThreadSafety.getCurrentNum();
-            currentNumber = currentNumber + 1;
-            blockSyncThreadSafety.setCurrentNum(currentNumber);
-        }
+        currentNumber = getAndIncCurrentNumber(currentNumber);
 
-        while (currentNumber < blockSyncThreadSafety.getMaxNum()) {
+        while (currentNumber < methodSyncThreadSafety.getMaxNum()) {
 
             int divisibleCount = 0;
 
@@ -112,15 +108,18 @@ class BlockSyncThread extends Thread {
 
             if (divisibleCount <= 2) {
                 System.out.println("[Thread " + Thread.currentThread().getId() + "] Número " + currentNumber + " é primo!");
-                blockSyncThreadSafety.getList().add(currentNumber);
+                methodSyncThreadSafety.getList().add(currentNumber);
             }
 
-            synchronized (this) {
-                currentNumber = blockSyncThreadSafety.getCurrentNum();
-                currentNumber = currentNumber + 1;
-                blockSyncThreadSafety.setCurrentNum(currentNumber);
-            }
+            currentNumber = getAndIncCurrentNumber(currentNumber);
 
         }
+    }
+
+    private synchronized int getAndIncCurrentNumber(int currentNumber) {
+        currentNumber = methodSyncThreadSafety.getCurrentNum();
+        currentNumber = currentNumber + 1;
+        methodSyncThreadSafety.setCurrentNum(currentNumber);
+        return currentNumber;
     }
 }
