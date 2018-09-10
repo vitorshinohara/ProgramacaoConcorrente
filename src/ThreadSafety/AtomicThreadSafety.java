@@ -20,7 +20,7 @@ public class AtomicThreadSafety {
 
     private int minRange;
     private int maxRange;
-    AtomicInteger current;
+    AtomicInteger current = new AtomicInteger(0);
     private List<Integer> list = new ArrayList();
 
     public AtomicThreadSafety() {
@@ -37,11 +37,21 @@ public class AtomicThreadSafety {
 
         System.out.println("Digite o intervalo (número final)");
         int max = scanner.nextInt();
+        
+        AtomicThreadSafety atomicThreadSafety = new AtomicThreadSafety();
+        
+        atomicThreadSafety.setMaxRange(max);
+        atomicThreadSafety.setMinRange(min);
+
+        atomicThreadSafety.current.set(min);
+
+        atomicThreadSafety.createNThreads(nThreads);
     }
 
     public void createNThreads(int n) {
         for (int i = 0; i < n; i++) {
-            // create threads
+            AtomicThread atomicThread = new AtomicThread(this);
+            atomicThread.start();
         }
     }
 
@@ -81,7 +91,6 @@ class AtomicThread extends Thread {
 
     @Override
     public void run() {
-        System.out.println("Running");
         int currentNumber;
 
         currentNumber = atomicThreadSafety.current.getAndIncrement();
