@@ -21,6 +21,26 @@ public class BlockSyncThreadSafety {
     private int minNum;
     private int currentNum;
     private List<Integer> list = new ArrayList();
+    
+    boolean verbose;
+
+    public BlockSyncThreadSafety(int maxNum, int minNum, int nThreads) {
+        this.maxNum = maxNum;
+        this.minNum = minNum;
+        this.currentNum = this.minNum;
+        this.createNThreads(nThreads);
+        this.verbose = false;
+    }
+
+    public BlockSyncThreadSafety(int maxNum, int minNum, int nThreads, boolean verbose) {
+        this.maxNum = maxNum;
+        this.minNum = minNum;
+        this.currentNum = this.minNum;
+        this.createNThreads(nThreads);
+        this.verbose = verbose;
+    }
+    
+    
 
     public List<Integer> getList() {
         return list;
@@ -111,7 +131,11 @@ class BlockSyncThread extends Thread {
             }
 
             if (divisibleCount <= 2) {
+                
+                
                 System.out.println("[Thread " + Thread.currentThread().getId() + "] Número " + currentNumber + " é primo!");
+                
+                
                 blockSyncThreadSafety.getList().add(currentNumber);
             }
 

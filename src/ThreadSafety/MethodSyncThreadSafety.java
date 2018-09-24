@@ -22,6 +22,16 @@ public class MethodSyncThreadSafety {
     private int currentNum;
     private List<Integer> list = new ArrayList();
 
+    public MethodSyncThreadSafety(int maxNum, int minNum, int nThreads) {
+        this.maxNum = maxNum;
+        this.minNum = minNum;
+        this.currentNum = this.minNum;
+        this.createNThreads(nThreads);
+    }
+    
+    
+    
+
     public List<Integer> getList() {
         return list;
     }
